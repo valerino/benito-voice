@@ -1,0 +1,25 @@
+services:
+
+  omnivoice-tts:
+    build:
+      context: ./omnivoice-tts
+    container_name: benito-omnivoice-tts
+    restart: unless-stopped
+    environment:
+      OMNIVOICE_DEVICE: cuda
+      OMNIVOICE_MAX_CONCURRENT: "1"
+      OMNIVOICE_REQUEST_TIMEOUT_S: "600"
+      OMNIVOICE_PROFILE_DIR: /profiles
+      OMNIVOICE_SPEED: "0.92"
+      OMNIVOICE_NUM_STEP: "40"
+      OMNIVOICE_GUIDANCE_SCALE: "4.0"
+      HF_HOME: /models/huggingface
+    volumes:
+      - ./omnivoice-profiles:/profiles:ro
+      - omnivoice-models:/models
+    ports:
+      - "127.0.0.1:8880:8880"
+    gpus: all
+
+volumes:
+  omnivoice-models:
